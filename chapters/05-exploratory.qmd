@@ -1,0 +1,143 @@
+---
+title: "Exploratory Text Analysis"
+---
+
+## Starting with Description
+
+Before modelling, describe the corpus: size, vocabulary richness, most frequent terms, temporal trends. Exploratory analysis generates hypotheses and catches preprocessing errors.
+
+## Word Frequencies
+
+```{webr}
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+
+# Simulated news corpus
+set.seed(42)
+words <- c("media", "government", "policy", "election", "party",
+           "leader", "vote", "minister", "public", "economy",
+           "climate", "health", "debate", "report", "journalist")
+
+corpus_sim <- tibble(
+  doc  = sample(1:50, 500, replace = TRUE),
+  word = sample(words, 500, replace = TRUE, prob = c(8,7,6,6,5,5,4,4,4,3,3,3,2,2,1))
+)
+
+corpus_sim |>
+  count(word, sort = TRUE) |>
+  slice_max(n, n = 10) |>
+  ggplot(aes(n, reorder(word, n))) +
+  geom_col(fill = "#2c7bb6") +
+  labs(x = "Frequency", y = NULL, title = "Top 10 terms")
+```
+
+## Lexical Diversity
+
+Lexical diversity measures vocabulary richness relative to text length:
+
+```{webr}
+library(quanteda)
+library(quanteda.textstats)
+
+docs <- c(
+  tabloid = "The star hit the fan over the big money deal after the big star hit back at the big club.",
+  broadsheet = "Parliamentary scrutiny of executive decisions intensified following leaked correspondence."
+)
+
+corp <- corpus(docs)
+toks <- tokens(corp)
+
+# Type-Token Ratio
+textstat_lexdiv(dfm(toks), measure = "TTR")
+```
+
+## Keyness: Comparing Two Corpora
+
+Keyness identifies terms that are significantly more frequent in one corpus versus a reference corpus — useful for comparing outlets, time periods, or speakers.
+
+```{webr}
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+
+# Simulated broadsheet vs tabloid word distributions
+set.seed(1)
+broadsheet_words <- sample(
+  c("parliament", "legislation", "scrutiny", "evidence", "policy",
+    "minister", "committee", "report", "analysis", "government"),
+  200, replace = TRUE
+)
+tabloid_words <- sample(
+  c("star", "shock", "fury", "crisis", "drama",
+    "blunder", "slammed", "row", "ban", "hit"),
+  200, replace = TRUE
+)
+
+make_doc <- function(words, n = 200) {
+  paste(sample(words, n, replace = TRUE), collapse = " ")
+}
+
+corp <- corpus(c(
+  broadsheet = make_doc(broadsheet_words),
+  tabloid    = make_doc(tabloid_words)
+))
+
+dfmat <- corp |>
+  tokens(remove_punct = TRUE) |>
+  dfm()
+
+textstat_keyness(dfmat, target = "broadsheet") |>
+  textplot_keyness()
+```
+
+## Collocations
+
+Collocations reveal which words habitually co-occur — important for identifying fixed phrases like *fake news* or *climate crisis*.
+
+```{webr}
+library(quanteda)
+library(quanteda.textstats)
+
+texts <- c(
+  "fake news has become a widespread concern in media studies.",
+  "climate crisis coverage dominated the news agenda last year.",
+  "fake news allegations were repeated by the opposition party.",
+  "the climate crisis requires urgent policy responses from governments.",
+  "media studies scholars analysed fake news during the election."
+)
+
+toks <- corpus(texts) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_tolower()
+
+textstat_collocations(toks, size = 2, min_count = 2)
+```
+
+## Temporal Trends
+
+```{webr}
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+
+# Simulated monthly article counts mentioning key terms
+set.seed(7)
+trend_data <- tibble(
+  month = rep(seq(as.Date("2023-01-01"), as.Date("2024-12-01"), by = "month"), 2),
+  term  = rep(c("climate crisis", "fake news"), each = 24),
+  n     = c(
+    round(cumsum(rnorm(24, 2, 3)) + 30),
+    round(abs(rnorm(24, 20, 5)))
+  )
+)
+
+ggplot(trend_data, aes(month, n, colour = term)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "3 months") +
+  labs(x = NULL, y = "Article count", colour = "Term",
+       title = "Monthly term frequency, 2023–2024") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```

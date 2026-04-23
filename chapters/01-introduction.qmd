@@ -1,0 +1,50 @@
+---
+title: "Introduction: Text as Data in Media Research"
+---
+
+## Why Computational Text Analysis?
+
+Media and communication researchers have always worked with text — news articles, political speeches, social media posts, interview transcripts. The explosion of digitised content has made manual analysis of large corpora impractical, while advances in open-source software have made computational approaches accessible without deep computer science backgrounds.
+
+Computational text analysis does not replace close reading. It complements it by allowing researchers to:
+
+- Describe patterns across thousands or millions of documents
+- test hypotheses about framing, tone, or topic systematically
+- Track change over time in media discourse
+
+## A Brief Map of Methods
+
+| Method | Core question | Typical scale |
+|---|---|---|
+| Frequency analysis | What words are prominent? | Any |
+| Sentiment analysis | What is the emotional tone? | Medium–large |
+| Topic modeling | What latent themes exist? | Large |
+| Supervised classification | Which category does a text belong to? | Large, with labelled data |
+| Word embeddings | How are concepts related? | Very large |
+
+: Overview of text analysis methods {#tbl-methods}
+
+## The Research Workflow
+
+A typical project follows these stages:
+
+1. **Research question** — what phenomenon in media or communication do you want to understand?
+2. **Corpus construction** — which texts, from where, covering what time period?
+3. **Preprocessing** — cleaning and structuring raw text for analysis.
+4. **Analysis** — applying one or more methods.
+5. **Validation** — checking that computational results reflect meaningful content.
+6. **Interpretation** — connecting findings to theory and prior literature.
+
+We will work through each stage in subsequent chapters.
+
+## Epistemological Considerations
+
+Text analysis inherits the assumptions of the underlying models. Word counts assume that meaning is carried by individual tokens. Sentiment lexicons encode the worldview of whoever annotated them. Topic models impose a particular generative story on how documents are produced.
+
+Being explicit about these assumptions — and about what they rule out — is a core part of good practice.
+
+## Further Reading
+
+- @grimmer2022text provide a comprehensive overview of text-as-data methods in social science.
+- @boumans2016taking review computational content analysis specifically for communication research.
+- @salganik2018bit discusses the broader landscape of digital trace data.

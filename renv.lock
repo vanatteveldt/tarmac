@@ -1,0 +1,245 @@
+{
+  "R": {
+    "Version": "4.4.1",
+    "Repositories": [
+      {
+        "Name": "CRAN",
+        "URL": "https://cloud.r-project.org"
+      }
+    ]
+  },
+  "Packages": {
+    "renv": {
+      "Package": "renv",
+      "Version": "1.0.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "397b7b2a265bc5a7a06852524dabae20",
+      "Requirements": []
+    },
+    "tidyverse": {
+      "Package": "tidyverse",
+      "Version": "2.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c328abb4a8d8958f4b8b0fbe78efdec6",
+      "Requirements": [
+        "broom", "cli", "conflicted", "dbplyr", "dplyr", "dtplyr",
+        "forcats", "ggplot2", "googledrive", "googlesheets4", "haven",
+        "hms", "httr", "jsonlite", "lubridate", "magrittr", "modelr",
+        "pillar", "purrr", "ragg", "readr", "readxl", "reprex",
+        "rlang", "rstudioapi", "rvest", "stringr", "tibble", "tidyr",
+        "xml2"
+      ]
+    },
+    "tidytext": {
+      "Package": "tidytext",
+      "Version": "0.4.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4c75fe6e57870c95d6c95cc1d0d5e4e6",
+      "Requirements": [
+        "Matrix", "dplyr", "generics", "janeaustenr", "lifecycle",
+        "purrr", "rlang", "stringr", "tibble", "tokenizers", "vctrs"
+      ]
+    },
+    "quanteda": {
+      "Package": "quanteda",
+      "Version": "3.3.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4cd3e4b2e21a25a476c87f1a9571fdad",
+      "Requirements": [
+        "FastRWeb", "Matrix", "RcppArmadillo", "RcppParallel",
+        "Rcpp", "SnowballC", "cli", "fastmatch", "magrittr",
+        "proxyC", "stopwords", "stringi", "xml2", "yaml"
+      ]
+    },
+    "quanteda.textstats": {
+      "Package": "quanteda.textstats",
+      "Version": "0.97.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "8a6ad6cdc20697f4e48e7e9dc5a8c7d2",
+      "Requirements": [
+        "Matrix", "Rcpp", "RcppArmadillo", "RcppParallel",
+        "SnowballC", "quanteda", "stringi"
+      ]
+    },
+    "quanteda.textplots": {
+      "Package": "quanteda.textplots",
+      "Version": "0.94.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c5e5b44d8e3d3285a97ef5e7e8b8f7d8",
+      "Requirements": [
+        "Matrix", "ggplot2", "ggrepel", "igraph", "network",
+        "quanteda", "sna", "wordcloud"
+      ]
+    },
+    "quanteda.textmodels": {
+      "Package": "quanteda.textmodels",
+      "Version": "0.9.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4b4d1dfb1c84a9a2c6c7b4b4c4c4c4c4",
+      "Requirements": [
+        "Matrix", "Rcpp", "RcppArmadillo", "SparseM",
+        "fastNaiveBayes", "glmnet", "quanteda", "robustbase"
+      ]
+    },
+    "topicmodels": {
+      "Package": "topicmodels",
+      "Version": "0.2-16",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6c63bd5f29d68d2c85f13f77a5a02e7a",
+      "Requirements": ["BH", "Matrix", "Rcpp", "RcppGSL", "modeltools", "slam"]
+    },
+    "stm": {
+      "Package": "stm",
+      "Version": "1.3.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d0b62e8e41d7a58a5e5d9a1d1a1a1a1a",
+      "Requirements": [
+        "Matrix", "Rcpp", "RcppArmadillo", "data.table",
+        "glmnet", "grDevices", "lda", "matrixStats",
+        "quadprog", "slam", "splines", "stringr"
+      ]
+    },
+    "textdata": {
+      "Package": "textdata",
+      "Version": "0.4.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4d3e4b2e21a25a476c87f1a9571fdad",
+      "Requirements": ["dplyr", "filelock", "rappdirs", "readr", "tibble", "withr"]
+    },
+    "tidymodels": {
+      "Package": "tidymodels",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2c7bb6c7b4b4c4c4c4c4c4c4c4c4c4c4",
+      "Requirements": [
+        "broom", "cli", "conflicted", "dials", "dplyr", "ggplot2",
+        "hardhat", "infer", "modeldata", "parsnip", "purrr",
+        "recipes", "rlang", "rsample", "tibble", "tidyr",
+        "tune", "workflows", "workflowsets", "yardstick"
+      ]
+    },
+    "textrecipes": {
+      "Package": "textrecipes",
+      "Version": "1.0.6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a",
+      "Requirements": [
+        "Matrix", "Rcpp", "cli", "dplyr", "generics",
+        "hardhat", "lifecycle", "recipes", "rlang",
+        "snap", "tibble", "tokenizers", "vctrs"
+      ]
+    },
+    "glmnet": {
+      "Package": "glmnet",
+      "Version": "4.1-8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a4a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5",
+      "Requirements": ["Matrix", "Rcpp", "RcppEigen", "foreach", "methods", "survival"]
+    },
+    "word2vec": {
+      "Package": "word2vec",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6",
+      "Requirements": ["Rcpp", "RcppProgress"]
+    },
+    "ggwordcloud": {
+      "Package": "ggwordcloud",
+      "Version": "0.6.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
+      "Requirements": ["Rcpp", "ggplot2", "png", "ggforce", "scales"]
+    },
+    "httr2": {
+      "Package": "httr2",
+      "Version": "1.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8",
+      "Requirements": [
+        "R6", "cli", "curl", "glue", "lifecycle",
+        "magrittr", "openssl", "rappdirs", "rlang",
+        "vctrs", "withr"
+      ]
+    },
+    "irr": {
+      "Package": "irr",
+      "Version": "0.84.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9",
+      "Requirements": ["lpSolve"]
+    },
+    "patchwork": {
+      "Package": "patchwork",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0",
+      "Requirements": ["cli", "ggplot2", "gtable", "rlang"]
+    },
+    "scales": {
+      "Package": "scales",
+      "Version": "1.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1",
+      "Requirements": ["R6", "RColorBrewer", "cli", "farver", "glue", "labeling", "lifecycle", "munsell", "rlang", "viridisLite"]
+    },
+    "widyr": {
+      "Package": "widyr",
+      "Version": "0.1.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+      "Requirements": ["broom", "dplyr", "purrr", "reshape2", "tibble", "tidyr"]
+    },
+    "ldatuning": {
+      "Package": "ldatuning",
+      "Version": "1.0.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3",
+      "Requirements": ["Matrix", "ggplot2", "reshape2", "topicmodels"]
+    },
+    "glue": {
+      "Package": "glue",
+      "Version": "1.7.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4",
+      "Requirements": []
+    },
+    "here": {
+      "Package": "here",
+      "Version": "1.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5",
+      "Requirements": ["rprojroot"]
+    },
+    "fs": {
+      "Package": "fs",
+      "Version": "1.6.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6",
+      "Requirements": []
+    }
+  }
+}

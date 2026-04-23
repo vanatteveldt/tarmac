@@ -1,0 +1,128 @@
+---
+title: "Sentiment Analysis"
+---
+
+## What Is Sentiment Analysis?
+
+Sentiment analysis assigns emotional valence — positive, negative, or neutral — to text. In media research it is used to study:
+
+- Tone of news coverage towards politicians or policies
+- Audience emotional responses in comments or social media
+- Changes in public mood over time
+
+> **Caveat**: Dictionary-based sentiment methods assume that sentiment is carried at the word level and is context-independent. Irony, negation, and domain-specific language all pose challenges.
+
+## Lexicon-Based Approaches
+
+### AFINN
+
+Words scored −5 (very negative) to +5 (very positive).
+
+```{webr}
+library(tidytext)
+library(dplyr)
+
+get_sentiments("afinn") |> slice_sample(n = 10)
+```
+
+### Bing
+
+Binary positive/negative classification.
+
+```{webr}
+library(tidytext)
+
+get_sentiments("bing") |>
+  count(sentiment)
+```
+
+### NRC
+
+Eight emotions (anger, fear, anticipation, trust, surprise, sadness, joy, disgust) plus positive/negative.
+
+```{webr}
+library(tidytext)
+
+get_sentiments("nrc") |>
+  count(sentiment, sort = TRUE)
+```
+
+## Applying Sentiment to a Corpus
+
+```{webr}
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+
+headlines <- tibble(
+  date = as.Date(c("2024-01-10","2024-02-14","2024-03-05",
+                   "2024-04-22","2024-05-01","2024-06-15")),
+  text = c(
+    "Economy surges as unemployment falls to record low",
+    "Government slammed over corruption scandal and cover-up",
+    "Hope for climate deal as nations reach historic agreement",
+    "Crisis deepens with fresh allegations against the prime minister",
+    "Breakthrough vaccine offers new hope in disease fight",
+    "Violence erupts at protest; dozens injured in clashes"
+  )
+)
+
+sentiment_scores <- headlines |>
+  mutate(line = row_number()) |>
+  unnest_tokens(word, text) |>
+  inner_join(get_sentiments("afinn"), by = "word") |>
+  group_by(date) |>
+  summarise(sentiment = sum(value))
+
+ggplot(sentiment_scores, aes(date, sentiment, fill = sentiment > 0)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = c("tomato", "steelblue")) +
+  labs(x = NULL, y = "Sentiment score (AFINN)", title = "Headline sentiment over time") +
+  theme_minimal()
+```
+
+## Emotion Analysis with NRC
+
+```{webr}
+library(tidytext)
+library(dplyr)
+library(ggplot2)
+
+text <- tibble(
+  text = paste(
+    "The prime minister faces growing anger over the betrayal of public trust.",
+    "Thousands of citizens expressed fear and sadness at the announcement.",
+    "Opposition leaders expressed disgust but offered hope for a better future."
+  )
+)
+
+text |>
+  unnest_tokens(word, text) |>
+  inner_join(get_sentiments("nrc"), by = "word") |>
+  filter(!sentiment %in% c("positive", "negative")) |>
+  count(sentiment, sort = TRUE) |>
+  ggplot(aes(n, reorder(sentiment, n), fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  labs(x = "Word count", y = NULL, title = "Emotion profile (NRC lexicon)") +
+  theme_minimal()
+```
+
+## Validation
+
+Always validate sentiment scores against human judgements for your specific domain. General-purpose lexicons trained on product reviews may perform poorly on political news.
+
+```{r}
+#| eval: false
+# Example validation workflow
+# 1. Sample 100–200 documents
+# 2. Have two coders assign sentiment manually
+# 3. Compute inter-rater reliability (Cohen's κ)
+# 4. Compare automated scores to human judgements (correlation, accuracy)
+library(irr)
+kappa2(human_ratings)  # from irr package
+```
+
+## Further Reading
+
+- @liu2012sentiment provides a comprehensive overview.
+- @young2012affective assess sentiment lexicons for political science.

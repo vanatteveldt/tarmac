@@ -1,0 +1,133 @@
+---
+title: "Word Embeddings and Semantic Analysis"
+---
+
+## Beyond Bag-of-Words
+
+Bag-of-words models treat words as independent tokens. Word embeddings represent words as dense vectors in a continuous space, capturing semantic relationships: words used in similar contexts have similar vectors.
+
+Key properties:
+
+- *king* − *man* + *woman* ≈ *queen*
+- *BBC* and *CNN* will be near each other
+- Distances reflect semantic similarity
+
+## Word2Vec and GloVe
+
+The two dominant pre-trained embedding families:
+
+| Model | Trained on | Dimensions | Use case |
+|---|---|---|---|
+| word2vec (Google) | Google News | 300 | General English |
+| GloVe (Stanford) | Wikipedia + Gigaword | 50–300 | General English |
+| fastText | Common Crawl | 300 | Subword-aware |
+
+For domain-specific corpora (e.g., political news), training embeddings on your own data often outperforms off-the-shelf models.
+
+## Using Pre-trained Embeddings
+
+```{r}
+#| eval: false
+library(word2vec)
+
+# Download GloVe vectors (large file, do once)
+# https://nlp.stanford.edu/projects/glove/
+
+model <- read.word2vec("glove.6B.100d.bin")
+
+# Most similar words
+predict(model, "journalist", type = "nearest", top_n = 10)
+
+# Analogies
+# king - man + woman
+v <- word2vec_similarity(
+  predict(model, c("king", "man", "woman"), type = "embedding"),
+  predict(model, rownames(model$words), type = "embedding")
+)
+```
+
+## Training Embeddings on Your Corpus
+
+```{r}
+#| eval: false
+library(word2vec)
+
+model <- word2vec(
+  x         = your_corpus_sentences,  # character vector, one sentence per element
+  type      = "cbow",
+  dim       = 100,
+  window    = 5,
+  min_count = 5,
+  iter      = 10,
+  threads   = 4
+)
+
+write.word2vec(model, "models/corpus_w2v.bin")
+```
+
+## Measuring Semantic Change Over Time
+
+A powerful media research application: track how the meaning of a term shifts across time periods.
+
+```{r}
+#| eval: false
+# Train separate models per decade/period
+# Align vector spaces using Procrustes alignment
+# Compare nearest neighbours or cosine distances
+
+# Conceptual workflow:
+periods <- list(
+  "1990s" = corpus_90s,
+  "2000s" = corpus_00s,
+  "2010s" = corpus_10s
+)
+
+models <- lapply(periods, \(corp) {
+  word2vec(corp, dim = 100, iter = 10, min_count = 10)
+})
+
+# Then align and compare vectors for target terms
+```
+
+## Concept Mover's Distance
+
+CMD measures how far documents are from a concept defined by seed words, using Earth Mover's Distance over word embeddings [@stoltz2019concept]:
+
+```{r}
+#| eval: false
+library(text2map)
+
+# Define concept pole
+populism_seeds <- c("people", "elite", "corrupt", "establishment", "ordinary")
+
+cmd_scores <- CMDist(
+  dtm    = your_dtm,
+  cw     = populism_seeds,
+  wv     = glove_matrix
+)
+```
+
+## Large Language Model Embeddings
+
+Modern transformer-based embeddings (e.g., from OpenAI, sentence-transformers) capture contextual meaning more accurately than static word2vec/GloVe. They are computationally heavier but accessible via API:
+
+```{r}
+#| eval: false
+library(httr2)
+
+get_embedding <- function(text, api_key) {
+  request("https://api.openai.com/v1/embeddings") |>
+    req_auth_bearer_token(api_key) |>
+    req_body_json(list(model = "text-embedding-3-small", input = text)) |>
+    req_perform() |>
+    resp_body_json() |>
+    pluck("data", 1, "embedding") |>
+    unlist()
+}
+```
+
+## Further Reading
+
+- @rodriguez2022word review word embeddings for social scientists.
+- @kozlowski2019geometry demonstrate embedding-based cultural analysis.
+- @stoltz2019concept introduce Concept Mover's Distance.

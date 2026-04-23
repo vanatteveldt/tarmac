@@ -1,0 +1,147 @@
+---
+title: "Text Preprocessing"
+---
+
+## Why Preprocessing Matters
+
+Raw text contains noise that can mislead analysis: inconsistent capitalisation, punctuation, HTML artefacts, and high-frequency function words that carry little topical signal. Preprocessing converts raw strings into a structured, analysis-ready form.
+
+> Preprocessing choices are consequential. Over-cleaning removes meaningful variation; under-cleaning adds noise. Document your decisions.
+
+## A Standard Pipeline
+
+```
+raw text
+  → normalise (lowercase, unicode)
+  → tokenise
+  → remove noise (URLs, HTML, special chars)
+  → remove stopwords (optional, task-dependent)
+  → stem or lemmatise (optional)
+  → construct tokens / DFM object
+```
+
+## Normalisation
+
+```{webr}
+library(stringr)
+
+raw <- "Breaking: @NATO announces 2024 summit — details at https://t.co/xyz #NATO"
+
+raw |>
+  str_to_lower() |>
+  str_remove_all("https?://\\S+") |>          # URLs
+  str_remove_all("@\\w+") |>                  # mentions
+  str_remove_all("#(\\w+)") |>                # hashtags (keep word?)
+  str_squish()
+```
+
+## Tokenisation
+
+```{webr}
+library(tidytext)
+library(dplyr)
+
+text <- tibble(text = "Breaking: NATO announces 2024 summit in Washington.")
+
+# Word tokens
+text |> unnest_tokens(word, text)
+```
+
+```{webr}
+library(tidytext)
+library(dplyr)
+
+text <- tibble(text = "Breaking: NATO announces 2024 summit in Washington.")
+
+# N-grams (bigrams)
+text |> unnest_ngrams(bigram, text, n = 2)
+```
+
+## Stopwords
+
+```{webr}
+library(tidytext)
+library(dplyr)
+
+data("stop_words")
+
+# tidytext ships three lexicons
+stop_words |> count(lexicon)
+```
+
+```{webr}
+library(tidytext)
+library(dplyr)
+
+texts <- tibble(
+  doc = 1:2,
+  text = c(
+    "The prime minister held a press conference about the economy.",
+    "Journalists attended a briefing on the government's new policy."
+  )
+)
+
+texts |>
+  unnest_tokens(word, text) |>
+  anti_join(stop_words, by = "word") |>
+  count(word, sort = TRUE)
+```
+
+## Stemming vs Lemmatisation
+
+**Stemming** (e.g. Porter) crudely chops suffixes: *running → run*, *studies → studi*.
+**Lemmatisation** maps to dictionary forms: *running → run*, *studies → study*.
+
+```{webr}
+library(quanteda)
+library(quanteda.textstats)
+
+toks <- tokens("Journalists are covering several stories about covering government policies.")
+# quanteda uses the Snowball stemmer
+tokens_wordstem(toks, language = "en")
+```
+
+## Building a Document-Feature Matrix
+
+```{webr}
+library(quanteda)
+
+docs <- c(
+  doc1 = "Media coverage of climate policy intensified after the summit.",
+  doc2 = "Politicians criticised media framing of the climate debate.",
+  doc3 = "Climate activists welcomed the new policy announcement."
+)
+
+dfmat <- corpus(docs) |>
+  tokens(remove_punct = TRUE) |>
+  tokens_tolower() |>
+  tokens_remove(stopwords("en")) |>
+  dfm() |>
+  dfm_trim(min_termfreq = 1)
+
+dfmat
+```
+
+## TF-IDF Weighting
+
+Term frequency–inverse document frequency down-weights terms that appear in many documents and up-weights distinctive terms:
+
+```{webr}
+library(tidytext)
+library(dplyr)
+
+texts <- tibble(
+  doc = c("A", "B", "C"),
+  text = c(
+    "Media coverage of climate policy intensified after the summit.",
+    "Politicians criticised media framing of the climate debate.",
+    "Climate activists welcomed the new policy announcement."
+  )
+)
+
+texts |>
+  unnest_tokens(word, text) |>
+  count(doc, word) |>
+  bind_tf_idf(word, doc, n) |>
+  arrange(desc(tf_idf))
+```

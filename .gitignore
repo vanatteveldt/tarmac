@@ -1,0 +1,12 @@
+/.quarto/
+/_book/
+/renv/library/
+/renv/staging/
+/renv/python/
+*.Rhistory
+.Rdata
+.httr-oauth
+data/*.csv
+data/*.rds
+data/*.rda
+models/
