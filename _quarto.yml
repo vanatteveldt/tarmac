@@ -14,18 +14,6 @@ book:
     - part: "Foundations"
       chapters:
         - chapters/01-introduction.qmd
-        - chapters/02-getting-started.qmd
-        - chapters/03-data-collection.qmd
-    - part: "Core Methods"
-      chapters:
-        - chapters/04-preprocessing.qmd
-        - chapters/05-exploratory.qmd
-        - chapters/06-sentiment.qmd
-    - part: "Advanced Topics"
-      chapters:
-        - chapters/07-topic-modeling.qmd
-        - chapters/08-content-analysis.qmd
-        - chapters/09-word-embeddings.qmd
     - chapters/references.qmd
 
 bibliography: references.bib

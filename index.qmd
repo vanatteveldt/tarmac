@@ -4,45 +4,13 @@ title: "Preface"
 
 # Welcome {.unnumbered}
 
-This book introduces computational text analysis for researchers in media and communication studies. It assumes basic familiarity with R but no prior experience with natural language processing or text mining.
+This book introduces computational text analysis...
 
 ## What You Will Learn
 
-By the end of this book you will be able to:
-
-- Collect and prepare text data from news archives, social media APIs, and web sources
-- Apply tidytext and quanteda workflows to preprocess and explore corpora
-- Perform sentiment analysis, topic modeling, and automated content analysis
-- Interpret and communicate results to social science audiences
+By the end of this book you will be able to ...
 
 ## How to Use This Book
 
 Each chapter mixes explanation with **interactive code blocks** — you can run and modify R code directly in your browser without installing anything. Look for cells marked with the {{< fa play >}} button.
 
-For deeper work, clone the repository and use the provided `renv` lockfile to reproduce the exact package environment:
-
-```r
-# In R, after cloning
-renv::restore()
-```
-
-## Software
-
-The book was built with:
-
-- [R](https://cran.r-project.org/) (≥ 4.3)
-- [Quarto](https://quarto.org/) (≥ 1.4)
-- [quarto-live](https://r-wasm.github.io/quarto-live/) for in-browser interactivity
-- [renv](https://rstudio.github.io/renv/) for reproducible package management
-
-See @sec-getting-started for installation instructions.
-
-## Conventions
-
-- Code that runs live in the browser uses `{webr}` chunks.
-- Code meant to be run locally uses standard `{r}` chunks with pre-computed output.
-- Margin notes provide tips and cross-references.
-
-## Acknowledgements
-
-*Add acknowledgements here.*

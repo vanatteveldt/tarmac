@@ -10,3 +10,7 @@ data/*.csv
 data/*.rds
 data/*.rda
 models/
+.Rproj.user
+
+**/*.quarto_ipynb
+/.RData
