@@ -33,11 +33,10 @@ with the columns being a selection of demographic information collected
 from [CBS regional
 figures](https://opendata.cbs.nl/statline/#/CBS/nl/dataset/70072ned/table?ts=1691399765879):
 
-```{r}
-1+1
-```
 
 ```{webr}
+#| warning: false
+
 library(tidyverse)
 demographics <- read_csv("data/dutch_demographics.csv")
 demographics
