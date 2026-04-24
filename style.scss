@@ -1,0 +1,45 @@
+/*-- scss:defaults --*/
+
+.continue {
+    @extend .btn;
+    @extend .btn-outline-primary;
+    margin-top: 2rem;
+}
+
+.sidebar-header {
+    text-align: center;
+}
+
+.sidebar-logo {
+    margin: 0 auto;
+
+    border-radius: 5%;
+    .link {
+        width: 100%;
+    }
+}
+
+.sidebar-search {
+    min-height: 40px;
+}
+
+/* Align chapter titles in the sidebar by giving the number a fixed width */
+.sidebar-navigation .chapter-number {
+    display: inline-block;
+    text-align: right;
+    font-family:
+        SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+    min-width: 1.2rem;
+    opacity: 0.5;
+}
+
+#title-block-header .chapter-number {
+    /* color: rgba(var(--bs-link-color-rgb)); */
+    opacity: 0.7;
+}
+
+#quarto-document-content > section {
+    /* margin-bottom: 4rem; */
+    padding-top: 1rem;
+}

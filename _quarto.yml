@@ -14,33 +14,22 @@ book:
     - part: "Foundations"
       chapters:
         - chapters/01-introduction.qmd
+        - chapters/02-funwithr.qmd
     - chapters/references.qmd
 
 bibliography: references.bib
 
 format:
-  html:
+  live-html:
     theme:
-      light: flatly
-      dark: darkly
-    code-link: true
+      - flatly
+      - style.scss
+    fontsize: 0.9em
     toc: true
-    toc-depth: 3
     number-sections: true
-    fig-align: center
-    fig-dpi: 150
-    highlight-style: github
+    number-depth: 2
 
-filters:
-  - live
-
-webr:
-  packages:
-    - tidyverse
-    - tidytext
-    - quanteda
-    - scales
-    - ggwordcloud
+engine: knitr
 
 execute:
   freeze: auto
