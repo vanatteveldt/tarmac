@@ -204,6 +204,44 @@ not committed (in .gitignore):
 3. If you added chapters, update the `chapters:` list in `_quarto.yml`.
 4. Open a pull request.
 
+## Using VS Code for webr
+
+The official Quarto VS Code extension does not treat `{webr}` code blocks as R, so out of the box you get neither syntax highlighting nor the usual "run this line" shortcut inside them. Two small tweaks restore both.
+
+### Syntax highlighting for `{webr}` blocks
+
+The Quarto extension's TextMate grammar only matches `{r}`, `{R}`, `{Rprofile}`, and identifiers ending in `-r` — `{webr}` falls through. Upstream issue: [quarto-dev/quarto#820](https://github.com/quarto-dev/quarto/issues/820).
+
+Edit the installed grammar file at `~/.vscode/extensions/quarto.quarto-<version>/syntaxes/quarto.tmLanguage` and add `|webr` to the alternation inside the `fenced_code_block_r` begin pattern:
+
+```diff
+- (R|r|s|S|Rprofile|\{\.r.+?\}|.+\-r)
++ (R|r|s|S|Rprofile|\{\.r.+?\}|.+\-r|webr)
+```
+
+Reload the window (`Ctrl+Shift+P` → "Developer: Reload Window"). Caveat: the extension replaces this file on update, so the edit must be re-applied after upgrading the Quarto extension.
+
+### `Ctrl+Enter` to run the current line or selection
+
+`quarto.runSelection` refuses to run `{webr}` cells because `webr` isn't in its list of executable languages. Bind `Ctrl+Enter` directly to the R extension's `r.runSelection`, which sends the current line (or selection) to the R terminal regardless of the surrounding cell type.
+
+Open `Ctrl+Shift+P` → "Preferences: Open Keyboard Shortcuts (JSON)" and add:
+
+```json
+{
+  "key": "ctrl+enter",
+  "command": "r.runSelection",
+  "when": "editorTextFocus && editorLangId == quarto && !findInputFocussed && !replaceInputFocussed"
+},
+{
+  "key": "ctrl+enter",
+  "command": "-quarto.runCurrent",
+  "when": "editorTextFocus && editorLangId == quarto && !findInputFocussed && !replaceInputFocussed"
+}
+```
+
+Requires the [R extension](https://marketplace.visualstudio.com/items?itemName=REditorSupport.r) (`REditorSupport.r`). The code runs in your **local** R session — the in-browser webR runtime only exists in the rendered HTML.
+
 ## License
 
 *Add license here.*
