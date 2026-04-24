@@ -1,0 +1,8 @@
+Package: tarmac
+title: "Text Analysis in R for Media and Communication"
+Version: 0.0.1
+Type: project
+Imports:
+    tidyverse
+Suggests:
+    languageserver  # For vs code
