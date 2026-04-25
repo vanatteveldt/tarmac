@@ -34,7 +34,6 @@ format:
 engine: knitr
 
 execute:
-  freeze: auto
   echo: true
   warning: false
   message: false

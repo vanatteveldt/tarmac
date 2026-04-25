@@ -48,6 +48,14 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Cache Quarto freeze
+        uses: actions/cache@v4
+        with:
+          path: _freeze
+          key: freeze-${{ hashFiles('**/*.qmd', '**/*.R', 'renv.lock') }}
+          restore-keys: |
+            freeze-
+
       - name: Render book
         run: quarto render
 
