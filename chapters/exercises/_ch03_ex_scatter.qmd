@@ -9,7 +9,7 @@ Can you change the code to show the relation between living in a less densely po
 library(tidyverse)
 votes <- read_csv("data/dutch_elections_2023.csv")
 demographics <- read_csv("data/dutch_demographics.csv")
-combined = inner_join(votes, demographics)
+combined <- inner_join(votes, demographics)
 ```
 
 ```{webr}
@@ -29,7 +29,7 @@ The column you're looking for is `v57_density` -- no quotes needed as it's not a
 :::
 :::
 
-::: {.solution exercise="ex_filter"}
+::: {.solution exercise="ex_scatter"}
 ::: { .callout-important icon=false title="🎓 Solution:"}
 
 Change the name of the party to `"BBB"` directly, remember to put it in quotes since it's a literal text.

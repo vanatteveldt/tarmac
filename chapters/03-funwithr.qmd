@@ -16,6 +16,13 @@ webr:
 library(tidyverse)
 ```
 
+## Introduction: Fun with R
+
+This chapter is intended to showcase a number of 'cool' things you can do with R: read, filter and combine data sets, create bar chart and scatter plots, and even plot information on maps.
+The chapter is intended as a 'guided tour'. Don't worry if you can't write this code yet — try to recognize the building blocks; we'll explain each one in detail in the chapters that follow.
+
+In the chapter there are some `✏️ Exercise` blocks where we ask you to adapt the code to get a different result. You should be able to complete these without much difficulty. There are also some `🧩 Challenges` where we challenge you a bit more to think about or tinker with the code -- feel free to skip these if you want and just enjoy the tour.
+
 ## Dutch politics
 
 For this tutorial, we will use voting results from the Dutch 2023 parliamentary elections.
@@ -75,14 +82,14 @@ example, the code below shows the results for a single municipality
 
 ::: {.callout-note title="Info"}
 The code box above is an exercise with a single correct solution. You
-need to change some code and click the `► Run Code`` button to
+need to change some code and click the `► Run Code` button to
 submit your answer. Don’t worry about making mistakes, you can try as
 often as you want and start over if needed. Some exercises (like this
 one) also contain `💡 Show Hint` which you can click if you are stuck.
 
-If you submit an incorrect answer, `R` will do it’s best to pinpoint
+If you submit an incorrect answer, `R` will do its best to pinpoint
 where the problem is -- but of course it’s only a computer, so it’s not
-always very helpful... It will also sometimes fail to recognize a submission as correct if it's different from it's own solution. So, if you're sure you're getting the right results but R won't give you full grades for it, just congratulate yourself for being original!
+always very helpful... It will also sometimes fail to recognize a submission as correct if it's different from its own solution. So, if you're sure you're getting the right results but R won't give you full grades for it, just congratulate yourself for being original!
 :::
 
 ## Simple visualizations
@@ -109,18 +116,25 @@ votes |>
   ggplot() + geom_col(aes(y=party, x=votes))
 ```
 
+::: {.callout-note title="Tidyverse pipelines: |>"}
+In tidyverse, we often apply multiple operations to a data set.
+In this case, we filter it, slice the top 10 parties, and then plot it.
+A powerful way to do this in R and especially tidyverse is by using the
+pipeline operator (`|>`) between operations: this makes the output of the first operation to automatically become the first (input) argument of the second. So, `votes |> filter(...)` is the same as `filter(votes, ...)`
+:::
+
 ### Make it beautiful
 
 The graph above was functional, but not as pretty or informative as it could be.
 Let's make two simple tweaks: Order the parties by vote share,
 and fill the bars in a color that matches the party profile.
-With apologies to the americans, we color right wing parties as blue (and call them liberal!),
-and left wing parties as red:
+With apologies to the americans, we color traditional right wing parties as blue (and call them liberal!),
+and traditional left wing parties as red:
 
 ```{webr}
 #| exercise: beautiful_bar
 party_colors <- c(
-  "PvdA/GL"="#DA2128", "SP"="#ED1C24", "NSC"="#1E5AA8", "VVD"="#0A2074", "PVV"="#6F4E37",
+  "PvdA/GL"="#DA2128", "SP"="#ED1C24", "NSC"="#1E5AA8", "VVD"="#0A2074", "PVV"="#D4A017",
   "D66"="#00AA55", "PvdD"="#006233", "DENK"="#22B0B8", "Volt"="#502379", "BIJ1"="#000000"
 )
 
@@ -128,6 +142,7 @@ votes |>
   filter(municipality == "Amsterdam") |>
   slice_max(order_by=votes, n=10) |>
   ggplot() +
+  # Note: fct_reorder reorders the factor levels in party by ascending vote
   geom_col(aes(y=fct_reorder(party, votes), x=votes, fill=party)) +
   scale_fill_manual(values=party_colors) +
   guides(fill="none")
@@ -138,6 +153,14 @@ Can you run this graph for Groningen? Why are two parties displayed in grey?
 Can you give them nice colors?
 :::
 
+::: {.callout-note title="Info"}
+Don't worry about completely understanding the ggplot syntax --
+we will explain it in much more detail later and in any case it can take a while to grow on you.
+But as a very short primer: the idea behing ggplot is that you
+link the `geom_`s appearing in the graph with the columns in your data by supplying an *aesthetic mapping*: the x axis is mapped to the votes column,
+the party column is mapped to the fill color, etc.
+ This produces a sensible default mapping which can then be customized by adding (`+`) additional elements to it such as the scale and guide information in this graph.
+:::
 
 ## Combining data sets to visualize patterns
 
@@ -170,13 +193,13 @@ demographics <- read_csv("data/dutch_demographics.csv")
 
 ```{webr}
 #| exercise: ex_join
-combined = inner_join(votes, demographics)
+combined <- inner_join(votes, demographics)
 combined |> filter(municipality == "Amsterdam")
 ```
 
 
 
-As you can see, this shows that in Amsterdam the left-wing/progressive PvdA/GL party did very well, and you can also see that the percentage of Dutch inhabitants without a migration history is relatively low - us Dutchies are in a minority here!
+As you can see, this shows that in Amsterdam the left-wing/progressive PvdA/GL party did very well, and you can also see that the percentage of Dutch inhabitants without a migration history is relatively low.
 
 You can also see that the the demographics per municipality are repeated for the different parties.
 This might seem awkward, but since e.g. population doesn't vary per party it's the only way to combine municipality-level information
@@ -214,7 +237,7 @@ we can clearly see a (non-linear) relationship between the population density of
 
 However, we can make it a lot nicer to look at, and possibly add more information. We can change how it looks by changing labels, changing the theme, and other customizations. In general, it's good practice to never include 'technical' terms like `v43_nl` in a graph, but rather use a name that makes sense to your readers. A good title and axis labels can make a graph understandable to a reader even without reading the text.
 
-More information is generally added by including additional *aesthetics*. For example, we could use the size and color of points to represent total population and percentage of the popualation without an immigration background. This would allow us to see three relations in the same graph: perhaps the farmer's party is really channeling nativist sentiment? How much information to include in a graph is always a trade-off: more information can also mean more clutter and make the graph harder to interpret.
+More information is generally added by including additional *aesthetics*. For example, we could use the size and color of points to represent total population and percentage of the population without an immigration background. This would allow us to see three relations in the same graph: perhaps the farmer's party is really channeling nativist sentiment? How much information to include in a graph is always a trade-off: more information can also mean more clutter and make the graph harder to interpret.
 
 
 ```{webr}
@@ -222,17 +245,23 @@ More information is generally added by including additional *aesthetics*. For ex
 #| exercise: ex_scatter2
 votes <- read_csv("data/dutch_elections_2023.csv")
 demographics <- read_csv("data/dutch_demographics.csv")
-combined = inner_join(votes, demographics)
+combined <- inner_join(votes, demographics)
 ```
 ```{webr}
 #| exercise: ex_scatter2
-highlight = combined |>
+
+# We make a subset of points for highlighting:
+# Very low and high vote percentages, large cities, and
+# Deventer (with more support for BBB than perhaps expected)
+highlight <- combined |>
   filter(party == "BBB",
-         votes > 18 | votes < 1.05 | v01_pop>300000 | municipality == "Deventer")
+         votes > 18 | votes < 1.05 | v01_pop>300000 |
+         municipality == "Deventer")
 
 combined |>
   filter(party == "BBB") |>
-  ggplot(mapping = aes(x = v57_density, y = votes, size=v01_pop, fill=1-v43_nl)) +
+  # Use 100 - v43_nl so low values means fewer migrants
+  ggplot(mapping = aes(x = v57_density, y = votes, size=v01_pop, fill=100-v43_nl)) +
   geom_point(alpha=.8, shape = 21, color="grey20") +
   geom_text(aes(label=municipality), data=highlight, size=3, nudge_y=-.2) +
   scale_fill_gradient(low = "white", high = "darkmagenta") +
@@ -280,7 +309,7 @@ shapes <- read_rds("data/shapes_nl.rds")
 shapes
 ```
 
-As you can see, this is a special data frame with one or rows for each municipality, represented as a 'multi-polygon'
+As you can see, this is a special data frame with one or more rows for each municipality, represented as a 'multi-polygon'
 
 Now, we can plot this map using a regular ggplot command, using the
 `geom_sf` geometrical object, which can directly use the `geom` column
@@ -294,6 +323,7 @@ example using the province column:
 library(sf)
 shapes <- read_rds("data/shapes_nl.rds")
 votes <- read_csv("data/dutch_elections_2023.csv")
+demographics <- read_csv("data/dutch_demographics.csv")
 ```
 ```{webr}
 #| exercise: ex_map
