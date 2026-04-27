@@ -3,7 +3,7 @@ title: "Text Analysis in R for Media and Communication"
 Version: 0.0.1
 Type: project
 Imports:
-    tidyverse
+    tidyverse,
+    sf
 Suggests:
-    # for VS Code integration:
     languageserver
