@@ -31,7 +31,7 @@ statistics bureau) and voting results from the election board. Both of
 these can be downloaded from the respective sources, but to make it easy
 we use cleaned up versions from this repository.
 
-### Demographics data
+### Voting data
 
 After running the code below with the `► Run Code` button, you will see
 a *data frame* on the screen. Data frames are the main data object in R.
@@ -46,7 +46,8 @@ In this case, each row represents a voting result from a Dutch party in a munici
 ```{webr}
 #| warning: false
 library(tidyverse)
-votes <- read_csv("data/dutch_elections_2023.csv")
+download.file("https://raw.githubusercontent.com/vanatteveldt/tarmac/refs/heads/main/data/dutch_elections_2023.csv", "dutch_elections_2023.csv")
+votes <- read_csv("dutch_elections_2023.csv")
 votes
 ```
 
@@ -173,7 +174,8 @@ For this, let's load a data set of municipality-level statistics provided by the
 
 ```{webr}
 #| warning: false
-demographics <- read_csv("data/dutch_demographics.csv")
+download.file("https://raw.githubusercontent.com/vanatteveldt/tarmac/refs/heads/main/data/dutch_demographics.csv", "dutch_demographics.csv")
+demographics <- read_csv("dutch_demographics.csv")
 head(demographics)
 ```
 
