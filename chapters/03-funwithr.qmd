@@ -315,6 +315,7 @@ We can also do a multiple regression to see whether the percentage of inhabitant
 
 ```{webr}
 #| exercise: lm
+#| warning: false
 library(sjPlot)
 d <- filter(combined, party == "BBB")
 m <- lm(votes ~ v57_density + v43_nl, data=d)
