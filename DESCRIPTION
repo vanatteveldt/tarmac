@@ -4,6 +4,7 @@ Version: 0.0.1
 Type: project
 Imports:
     tidyverse,
-    sf
+    sf,
+    sjPlot
 Suggests:
     languageserver

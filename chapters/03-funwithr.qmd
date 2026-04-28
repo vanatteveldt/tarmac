@@ -244,7 +244,7 @@ More information is generally added by including additional *aesthetics*. For ex
 
 ```{webr}
 #| setup: true
-#| exercise: ex_scatter2
+#| exercise: [ex_scatter2, cor, lm]
 votes <- read_csv("data/dutch_elections_2023.csv")
 demographics <- read_csv("data/dutch_demographics.csv")
 combined <- inner_join(votes, demographics)
@@ -293,6 +293,41 @@ and especially to play around with it a bit.
 :::
 
 As you can see, the final plot used a lot of additional commands after the initial `ggplot` and `geom_point` specification. In general, this is how `ggplot` works: it makes it really easy to make a decent-looking, informative graph, and you can then add additional functions to customize anything you want until you have exactly the graph you need. For more example graphs (with their source code!), see the [R Graph Gallery](https://r-graph-gallery.com/). For a more in-depth explanation of visualization principles (also with R source code), see the excellent and free book by Kieran Healy on [Data Visualization](https://socviz.co/).
+
+### Statistics
+
+Even though this part of the book is not focused on statistics,
+it's hard to pass an opportunity to test a nice hypothesis.
+
+Let's do a correlation test first between voting and population density.
+Note that the statistics commands are not from tidyverse,
+so they don't tend to work nicely in a pipeline.
+Instead, we first filter the data for a single party,
+and then use `$` to refer to a column:
+
+```{webr}
+#| exercise: cor
+d <- filter(combined, party == "BBB")
+cor.test(d$votes, d$v57_density)
+```
+
+We can also do a multiple regression to see whether the percentage of inhabitants with a migration history might be a confounder:
+
+```{webr}
+#| exercise: lm
+library(sjPlot)
+d <- filter(combined, party == "BBB")
+m <- lm(votes ~ v57_density + v43_nl, data=d)
+tab_model(m, show.std = TRUE)
+```
+
+::: {.challenge}
+What do the results mean about support for the BBB party?
+Are municipality-level statistics informative about individual voter movitations?
+
+Can you model the vote share for another party such as the progressive PvdA/GL?
+:::
+
 
 ## Plotting maps
 
