@@ -2,7 +2,7 @@
 
 Availability: R package (dslabs::gapminder), CC0 or CC-BY
 
-Pro: accessible, easy to understand, somewhat interesting, many possible questions
+Pro: accessible, easy to understand, somewhat interesting, many possible questions  
 Con: perhaps overused?
 
 Description: Health and income outcomes for 184 countries from 1960 to 2016. 
@@ -23,7 +23,7 @@ Possible RQs:
 
 Availability: R Package (fivethirtyeight::bechdel), CC-BY
 
-Pro: accessible, 'woke', perhaps more interesting than statistics, can reproduce graphs from article
+Pro: accessible, 'woke', perhaps more interesting than statistics, can reproduce graphs from article  
 Con, perhaps fewer interesting tidyverse operations?
 
 Description: do films pass the bechdel test? Data from article:
@@ -58,3 +58,19 @@ Possible RQs:
 - Interesting relations to plot (filter, perhaps summarize, ggplot), e.g. 
   Relation between cohort/generation and other aspects; 
   relation between hapiness and other factors, social/educational mobility
+  
+# Eurobarometer
+
+Availability: Publicly accessible via GESIS, R package eurobarometer (not on CRAN)
+
+Pro: Highly prestigious, essential EU topics (climate, democracy, trust), cross-national comparisons.  
+Con: Data cleaning nightmare: sav files with complex labeling, variables change over time. Probably needs extensive cleaning and redistribution by us
+
+columns: many and variable, but has respondent demographics, trust, opinion on climate etc
+
+Possible rqs:
+- lesson on data cleaning (rename, filter, etc)
+- opinions per country (filter/groupby/summarize)
+- climate concern by generation (bin age into factor)
+- longitudinal shifts (pivot)
+
