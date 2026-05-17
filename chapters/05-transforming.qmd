@@ -435,7 +435,6 @@ bechdel <- read_csv("data/bechdel.csv") |>
 ```
 ```{webr}
 #| exercise: demo_summarize
-
 bechdel_grouped <- group_by(bechdel, passed)
 bechdel_summary <- summarize(bechdel_grouped, mean_roi = mean(roi, na.rm=TRUE))
 bechdel_summary

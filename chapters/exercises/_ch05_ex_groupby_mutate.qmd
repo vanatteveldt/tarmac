@@ -24,10 +24,13 @@ bechdel_over_time <- read_csv("data/bechdel.csv") |>
 ```
 ```{webr}
 #| exercise: ex_groupby_mutate
+# Fill in the blanks below:
 bechdel_over_time_rel <- bechdel_over_time |>
   group_by(...) |>
   mutate(total_n = ...,
          proportion = ...)
+
+# No need to change the code below, but feel free to have a look!
 ggplot(bechdel_over_time_rel, aes(x=decade, y=proportion, fill=test)) +
   geom_col(position="stack") +
   theme_classic() +
@@ -55,11 +58,13 @@ ggplot(bechdel_over_time_rel, aes(x=decade, y=proportion, fill=test)) +
 ```{webr}
 #| exercise: ex_groupby_mutate
 #| solution: true
+# Solution with blanks filled in:
 bechdel_over_time_rel <- bechdel_over_time |>
   group_by(decade) |>
   mutate(total_n = sum(n_films),
          proportion = n_films / total_n)
 
+# No need to change the code below, but feel free to have a look!
 ggplot(bechdel_over_time_rel, aes(x=decade, y=proportion, fill=test)) +
   geom_col(position="stack") +
   theme_classic() +
@@ -83,3 +88,19 @@ gradethis::grade_this({
 
 })
 ```
+
+::: {.challenge}
+In this chapter we got two quite different answers to question whether "do Bechdel-passing films make more money?", depending on seemingly small methodological choices:
+
+- mean vs median
+- what counts as "passing"
+- which years we include
+- domestic vs worldwide gross
+
+Which choice do you think is the most impactful?
+Can you re-run the analysis with only that choice made differently?
+How does your conclusion change?
+
+Now imagine a journalist asks you: "Do Bechdel-passing films perform better
+financially?" What would you say?
+:::
