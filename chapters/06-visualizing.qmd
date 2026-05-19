@@ -1,13 +1,138 @@
 ---
-title: "Visualizing data (todo)"
+title: "Visualizing data"
+# TODO: add gapminder CSV to data/ (export from dslabs::gapminder) and list here
+# gss_cat is available from the forcats package — no CSV needed
 webr:
   resources:
-    - ../data/dutch_demographics.csv
-    - ../data/dutch_elections_2023.csv
-    - ../data/shapes_nl.rds
+    - ../data/bechdel.csv
 ---
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 {{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
 
-### Factors (todo) {#sec-factor}
+<!-- CHAPTER PLAN (remove before publication)
+
+Section sequence and teaching goals:
+
+Intro       Why visualize? Anscombe's Quartet: four datasets, identical statistics, completely
+            different pictures. One show-and-tell chunk, no ggplot yet.
+
+6.1  Scatter       geom_point | Gapminder: GDP per capita vs life expectancy
+                   GOG: the core data → aes() → geom mapping; the additive + syntax
+                   After first plot: themes as a quick payoff (theme_minimal etc.)
+
+6.2  More aes      geom_point (extended), geom_smooth | Gapminder: does continent explain the pattern?
+                   GOG: mapping extra vars to color/size/shape; fixed values vs mapped aes();
+                        global (ggplot) vs local (geom) aes() inheritance;
+                        geom_smooth for trends (stat transformation, gentle intro)
+                   Challenge: geom_jitter for overplotting; geom_label for country labels
+
+6.3  Bar charts    geom_col / geom_bar | Bechdel: films per decade that pass the test
+                   GOG: factors and ordering; informative axis labels and titles
+                   Note: "calculate before you graph" — dplyr summary first, then geom_col,
+                         is clearer than letting geom_bar count internally
+
+6.4  Stacked bars  geom_col(position="fill") | Bechdel: recreate FiveThirtyEight Figure 1
+     + scales      GOG: position adjustments; scale_fill_manual() with original red/blue palette
+                   Note: colorblind-safe palette alternatives (scale_fill_brewer / ggthemes)
+
+6.5  Distributions geom_histogram, geom_density, geom_boxplot / geom_violin
+                   | Gapminder: distribution of life expectancy across countries
+                   GOG: stat transformations (binning/density); one variable is enough;
+                        histogram shows full shape, box plot summarises (median/IQR/outliers)
+                   Challenge: same plots with GSS (gss_cat) — TV hours by political affiliation
+
+6.6  Over time     geom_line | Gapminder (life expectancy); Piketty or polling data as alternative
+                   GOG: the group aesthetic; continuous x axis; time series patterns
+                   Callout: forgetting group= with geom_line produces spaghetti — show the error
+
+6.7  Facets        facet_wrap() | Gapminder: same line graph split by continent
+                   GOG: "the same plot, applied to each subset"; facet_wrap vs facet_grid
+
+6.8  Saving        ggsave() — short practical callout; file formats, size/dpi
+
+Learn more         Callout: Healy socviz.co for practical guidance and inspiration;
+                   Wickham ggplot2 book (freely online) for grammar of graphics theory
+-->
+
+<!-- ======================================================== -->
+
+## Why visualize? {#sec-vis-why}
+
+<!-- Anscombe's Quartet show-and-tell: load the anscombe dataset (built into R),
+     plot all four panels. No ggplot explanation yet — just the punchline that
+     identical summary stats can hide completely different patterns.
+     One paragraph of prose framing the chapter. -->
+
+## Your first ggplot {#sec-vis-first}
+
+<!-- Introduce Gapminder dataset (download.file + read_csv pattern).
+     Build scatter of GDP per capita vs life expectancy step by step:
+     empty ggplot() call → add aes() → add geom_point().
+     Callout: the data → aes() → geom mapping (GOG core).
+     Callout: the + syntax and what it means.
+     Then: add + theme_minimal() as an immediate payoff — easy, visible, fun. -->
+
+## Mapping more variables {#sec-vis-aes}
+
+<!-- Extend the scatter: map continent to color, population to size.
+     Show fixed value (color = "steelblue" outside aes()) vs mapped (color = continent inside).
+     Callout: global aes() in ggplot() vs local aes() in geom_*() — inheritance and override.
+     Add geom_smooth() for trend line with confidence interval.
+     Callout: geom_smooth is doing a stat transformation — first hint that geoms can summarise.
+     Challenge: try geom_jitter() to handle overplotting; try geom_label() to identify countries. -->
+
+## How do they compare? Bar charts {#sec-vis-bar}
+
+<!-- Introduce Bechdel dataset (download.file + read_csv).
+     Summarise with dplyr first (films per decade, pass/fail), then geom_col().
+     Note: "calculate before you graph" — explicit dplyr pipeline is clearer than geom_bar() counting.
+     Cover: factors for ordering bars; informative axis labels with labs(); coord_flip() if needed.
+     Exercise: change which variable is on x, or reorder bars by count. -->
+
+## Recreating a published figure {#sec-vis-stacked}
+
+<!-- Goal: reproduce FiveThirtyEight Figure 1 from the Bechdel article.
+     Stacked proportional bar: geom_col(position = "fill").
+     Callout: position adjustments (stack / fill / dodge).
+     scale_fill_manual() to match the original red/blue palette.
+     Note: colorblind-safe alternatives — scale_fill_brewer() or ggthemes::scale_fill_colorblind().
+     Challenge: can you get the axis labels and title to match the original? -->
+
+## How is it distributed? {#sec-vis-dist}
+
+<!-- Back to Gapminder: distribution of life expectancy across countries.
+     geom_histogram() — bins, binwidth argument.
+     geom_density() — smooth alternative.
+     Callout: stat transformations — ggplot is summarising data before drawing.
+     geom_boxplot() / geom_violin() as complement: same question, shows median/IQR/outliers.
+     Contrast: histogram = full shape; box plot = summary — when to use which.
+     Challenge: reproduce with gss_cat (forcats package) — TV hours by political affiliation. -->
+
+## How does it change over time? {#sec-vis-line}
+
+<!-- geom_line() with Gapminder: life expectancy over time per country.
+     Callout: the group aesthetic — without it, ggplot connects all points (show the error).
+     Piketty inequality data or election polling data as a stronger narrative alternative
+     (decision deferred; use Gapminder for now, note the swap in a TODO).
+     Cover: colour by continent, readable legend. -->
+
+## Comparing groups side by side: facets {#sec-vis-facets}
+
+<!-- Continue from line graph: facet_wrap(~ continent) to split by continent.
+     Callout: facet_wrap vs facet_grid; scales = "free" option.
+     GOG point: facets are just "the same plot, applied to each subset" — the grammar scales. -->
+
+## Saving your plot {#sec-vis-save}
+
+<!-- Short practical section: ggsave("filename.png", plot, width, height, dpi).
+     Note common formats (PNG for screen, PDF/SVG for publication).
+     One show-and-tell chunk, no exercise needed. -->
+
+## Learn more {#sec-vis-learnmore}
+
+<!-- Callout pointing to:
+     - Healy, Data Visualization: A Practical Introduction (socviz.co) — practical guidance,
+       social science examples, best-practice discussion
+     - Wickham, ggplot2: Elegant Graphics for Data Analysis (ggplot2-book.org) — GOG theory
+       for students who want to understand the grammar fully -->
